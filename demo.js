@@ -17,14 +17,14 @@ function home_view(dispatcher) {
     alert('Welcome!');
 }
 
-function hello_view(dispatcher, context) {
-    if (!context.name) {
+function hello_view(dispatcher, request) {
+    if (!request.name) {
         alert('Hey, anonymous!');
         return;
     }
-    var status = window.confirm('Hey, are you ' + context.name + '?');
+    var status = window.confirm('Hey, are you ' + request.name + '?');
     if (status) {
-        alert('Tere ' + context.name + '!');
+        alert('Tere ' + request.name + '!');
     } else {
         dispatcher.redirect(dispatcher.reverse('home'));
     }

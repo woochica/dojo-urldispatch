@@ -77,9 +77,9 @@ dojo.declare('urldispatch.Dispatcher',
             // description:
             //            Finds routing rule that matches against the URL hash
             //            specified and calls appropiate view function with
-            //            context arguments.  Exactly one view should belong to
+            //            request arguments.  Exactly one view should belong to
             //            each routes.
-            var i, j, route, params, context = {}, arg;
+            var i, j, route, params, request = {}, arg;
             for (i = 0; i < this._routes.length; i++) {
                 route = this._routes[i];
                 if (!route.pattern.test(hash)) {
@@ -90,9 +90,9 @@ dojo.declare('urldispatch.Dispatcher',
                 params.pop();
                 for (j = 0; j < params.length; j++) {
                     arg = route.kwArgs[j].substring(1); // strip first char ':'
-                    context[arg] = params[j];
+                    request[arg] = params[j];
                 }
-                (route.view)(this, context);
+                (route.view)(this, request);
                 break;
             }
         }
