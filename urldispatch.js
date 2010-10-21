@@ -1,4 +1,6 @@
 dojo.provide('urldispatch');
+dojo.provide('urldispatch.MissingArgumentError');
+dojo.provide('urldispatch.RouteNotFoundError');
 
 dojo.require("dojo.hash");
 
@@ -53,17 +55,17 @@ dojo.declare('urldispatch.Dispatcher',
                         if (route.kwArgs === null) {
                             return route.path;
                         }
-                        throw new Error('Missing arguments for route "' + route.name + '"');
+                        throw new urldispatch.MissingArgumentError(this.declaredClass + '.reverse(): Missing arguments for route "' + route.name + '"');
                     }
                     return route.path.replace(/:(\w+)/g, function(str, p1) {
                         if (typeof context[p1] !== 'undefined') {
                             return context[p1];
                         }
-                        throw new Error('Missing argument "' + p1 + '" for route "' + route.name + '"');
+                        throw new urldispatch.MissingArgumentError(this.declaredClass + '.reverse(): Missing argument "' + p1 + '" for route "' + route.name + '"');
                     });
                 }
             }
-            throw new Error('No route matched the name "' + name + '"');
+            throw new urldispatch.RouteNotFoundError(this.declaredClass+'.reverse(): No route matched the name "' + name + '"');
         },
 
         dispatch: function(/*String*/ hash) {
@@ -93,3 +95,7 @@ dojo.declare('urldispatch.Dispatcher',
         }
     }
 );
+
+
+dojo.declare('urldispatch.MissingArgumentError', Error, {});
+dojo.declare('urldispatch.RouteNotFoundError', Error, {});
