@@ -27,8 +27,10 @@ dojo.declare('urldispatch.Dispatcher',
             dojo.forEach(routes, dojo.hitch(this, function(route) {
                 this._routes.push({
                     pattern: new RegExp('^' + route[0].replace(/(:\w+)/, '(\\w+)') + '$', 'g'),
+                    path: route[0],
                     view: route[1],
-                    kwArgs: route[0].match(/:\w+/g)
+                    kwArgs: route[0].match(/:\w+/g),
+                    name: route[2]
                 });
             }));
         },
@@ -36,7 +38,29 @@ dojo.declare('urldispatch.Dispatcher',
         redirect: function(/*String*/ hash) {
             // summary:
             //            Redirects visitor to argument URL hash.
-            dojo.hash(url);
+            dojo.hash(hash);
+        },
+
+        reverse: function(/*String*/ name, /*Object*/ context) {
+            // summary:
+            //            Returns route path for specified name.  Raises error
+            //            if no route matched or context arguments are missing.
+            var i, j, route;
+            for (i = 0; i < this._routes.length; i++) {
+                route = this._routes[i];
+                if (route.name === name) {
+                    if (typeof context === 'undefined') {
+                        return route.path;
+                    }
+                    return route.path.replace(/:(\w+)/g, function(str, p1) {
+                        if (typeof context[p1] !== 'undefined') {
+                            return context[p1];
+                        }
+                        throw new Error('Missing argument "' + p1 + '" for route "' + route.name + '"');
+                    });
+                }
+            }
+            throw new Error('No route matched the name "' + name + '"');
         },
 
         dispatch: function(/*String*/ hash) {
