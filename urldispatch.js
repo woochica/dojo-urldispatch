@@ -25,9 +25,11 @@ dojo.declare('urldispatch.Dispatcher',
             //            Transforms abstract URL patterns to regular
             //            expressions and collects keyword arguments.
             dojo.forEach(routes, dojo.hitch(this, function(route) {
-                var kwArgs = route[0].match(/:\w+/g),
-                    re = new RegExp('^' + route[0].replace(/(:\w+)/, '(\\w+)') + '$', 'g');
-                this._routes.push([re, route[1], kwArgs]);
+                this._routes.push({
+                    pattern: new RegExp('^' + route[0].replace(/(:\w+)/, '(\\w+)') + '$', 'g'),
+                    view: route[1],
+                    kwArgs: route[0].match(/:\w+/g)
+                });
             }));
         },
 
@@ -45,21 +47,20 @@ dojo.declare('urldispatch.Dispatcher',
             //            specified and calls appropiate view function with
             //            context arguments.  Exactly one view should belong to
             //            each routes.
-            var i, j, route, params, context = {}, arg, view;
+            var i, j, route, params, context = {}, arg;
             for (i = 0; i < this._routes.length; i++) {
                 route = this._routes[i];
-                if (!route[0].test(hash)) {
+                if (!route.pattern.test(hash)) {
                     continue;
                 }
-                params = hash.split(route[0]);
+                params = hash.split(route.pattern);
                 params.shift(); // strip first and last empty chunk
                 params.pop();
                 for (j = 0; j < params.length; j++) {
-                    arg = route[2][j].substring(1); // strip first char ':'
+                    arg = route.kwArgs[j].substring(1); // strip first char ':'
                     context[arg] = params[j];
                 }
-                view = route[1];
-                view(this, context);
+                (route.view)(this, context);
                 break;
             }
         }
