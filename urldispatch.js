@@ -53,10 +53,13 @@ dojo.declare('urldispatch.Dispatcher',
                 if (route.name === name) {
                     if (typeof context === 'undefined') {
                         if (route.kwArgs === null) {
+                            // return path if no context arguments present and
+                            // route has no parameter
                             return route.path;
                         }
                         throw new urldispatch.MissingArgumentError(this.declaredClass + '.reverse(): Missing arguments for route "' + route.name + '"');
                     }
+                    // substitute keyword arguments to context parameters
                     return route.path.replace(/:(\w+)/g, function(str, p1) {
                         if (typeof context[p1] !== 'undefined') {
                             return context[p1];
