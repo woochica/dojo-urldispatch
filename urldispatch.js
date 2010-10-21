@@ -50,7 +50,10 @@ dojo.declare('urldispatch.Dispatcher',
                 route = this._routes[i];
                 if (route.name === name) {
                     if (typeof context === 'undefined') {
-                        return route.path;
+                        if (route.kwArgs === null) {
+                            return route.path;
+                        }
+                        throw new Error('Missing arguments for route "' + route.name + '"');
                     }
                     return route.path.replace(/:(\w+)/g, function(str, p1) {
                         if (typeof context[p1] !== 'undefined') {
