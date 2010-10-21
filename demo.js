@@ -13,11 +13,11 @@ dojo.ready(function() {
 });
 
 // Some views
-function home_view(dispatcher) {
+function home_view(request) {
     alert('Welcome!');
 }
 
-function hello_view(dispatcher, request) {
+function hello_view(request) {
     if (!request.name) {
         alert('Hey, anonymous!');
         return;
@@ -26,6 +26,7 @@ function hello_view(dispatcher, request) {
     if (status) {
         alert('Tere ' + request.name + '!');
     } else {
-        dispatcher.redirect(dispatcher.reverse('home'));
+        var url = request.dispatcher.reverse('home');
+        request.dispatcher.redirect(url);
     }
 }

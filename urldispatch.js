@@ -79,7 +79,8 @@ dojo.declare('urldispatch.Dispatcher',
             //            specified and calls appropiate view function with
             //            request arguments.  Exactly one view should belong to
             //            each routes.
-            var i, j, route, params, request = {}, arg;
+            var i, j, route, params, arg,
+                request = {dispatcher: this};
             for (i = 0; i < this._routes.length; i++) {
                 route = this._routes[i];
                 if (!route.pattern.test(hash)) {
@@ -92,7 +93,7 @@ dojo.declare('urldispatch.Dispatcher',
                     arg = route.kwArgs[j].substring(1); // strip first char ':'
                     request[arg] = params[j];
                 }
-                (route.view)(this, request);
+                (route.view)(request);
                 break;
             }
         }
