@@ -9,8 +9,11 @@ dojo.ready(function() {
         ['!/Hello', hello_view],
         ['!/Hello/:name', hello_view, 'hello']
     ];
-    var dispatcher = new urldispatch.Dispatcher(routes);
-    dispatcher.notFoundHandler = notfound_handler;
+    var dispatcher = new urldispatch.Dispatcher(routes, {
+        notFoundHandler: function (request) {
+            console.log(request);
+        }
+    });
 });
 
 // Some views
@@ -30,8 +33,4 @@ function hello_view(request) {
         var url = request.dispatcher.reverse('home');
         request.dispatcher.redirect(url);
     }
-}
-
-function notfound_handler(request) {
-    console.log(request);
 }

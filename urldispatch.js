@@ -11,13 +11,14 @@ dojo.declare('urldispatch.Dispatcher',
         // Default action handler for unknown routes
         notFoundHandler: null,
 
-        constructor: function(/*Array*/ routes) {
+        constructor: function(/*Array*/ routes, args) {
             // summary:
             //            Constructs Dispatcher object.
             // description:
             //            Builds inner routing table and subscribes itself
             //            to location hash changes.
             this._parseRoutes(routes);
+            dojo.mixin(this, args);
             dojo.subscribe("/dojo/hashchange", this, 'dispatch');
             this.dispatch(dojo.hash());
         },
