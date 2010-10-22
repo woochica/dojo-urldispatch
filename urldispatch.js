@@ -12,7 +12,7 @@ dojo.declare('urldispatch.Dispatcher',
         // Default action handler for unknown routes
         notFoundHandler: null,
 
-        constructor: function(/*Array*/ routes, args) {
+        constructor: function(/*Array*/ routes, /*Object?*/ args) {
             // summary:
             //            Constructs Dispatcher object.
             // description:
@@ -36,6 +36,8 @@ dojo.declare('urldispatch.Dispatcher',
             // description:
             //            Transforms abstract URL patterns to regular
             //            expressions and collects keyword arguments.
+            // tags:
+            //            private
             dojo.forEach(routes, dojo.hitch(this, function(route) {
                 this._routes.push({
                     pattern: new RegExp('^' + route[0].replace(/(:\w+)/, '(\\w+)') + '$', 'g'),
@@ -53,7 +55,7 @@ dojo.declare('urldispatch.Dispatcher',
             dojo.hash(hash);
         },
 
-        reverse: function(/*String*/ name, /*Object*/ context) {
+        reverse: function(/*String*/ name, /*Object?*/ context) {
             // summary:
             //            Returns route path for specified name.  Raises error
             //            if no route matched or context arguments are missing.
