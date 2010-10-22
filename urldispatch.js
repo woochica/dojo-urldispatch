@@ -79,10 +79,15 @@ dojo.declare('urldispatch.Dispatcher',
             // description:
             //            Finds routing rule that matches against the URL hash
             //            specified and calls appropiate view function with
-            //            request arguments.  Exactly one view should belong to
-            //            each routes.
+            //            request object. Request object contains a reference
+            //            to the dispatcher instance, the route path, and
+            //            matched URL parameters.  Exactly one view should
+            //            belong to each routes.
             var i, j, route, params, arg,
-                request = {dispatcher: this};
+                request = {
+                    dispatcher: this,
+                    path: hash
+                };
             for (i = 0; i < this._routes.length; i++) {
                 route = this._routes[i];
                 if (!route.pattern.test(hash)) {
