@@ -5,9 +5,9 @@ dojo.require("urldispatch");
 // Set up routes
 dojo.ready(function() {
     var routes = [
-        ['/', home_view, 'home'],
-        ['/Hello', hello_view],
-        ['/Hello/:name', hello_view, 'hello']
+        ['!/', home_view, 'home'],
+        ['!/Hello', hello_view],
+        ['!/Hello/:name', hello_view, 'hello']
     ];
     var dispatcher = new urldispatch.Dispatcher(routes);
 });
