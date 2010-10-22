@@ -12,7 +12,7 @@ dojo.declare('urldispatch.Dispatcher',
         // Default action handler for unknown routes
         notFoundHandler: null,
 
-        constructor: function(/*Array*/ routes, /*Object?*/ args) {
+        constructor: function(/*Array*/ routes, /*Object?*/ args){
             // summary:
             //            Constructs Dispatcher object.
             // description:
@@ -24,13 +24,13 @@ dojo.declare('urldispatch.Dispatcher',
             this.dispatch(dojo.hash());
         },
 
-        destroy: function() {
+        destroy: function(){
             // summary:
             //            Stop listening location hash changes.
             dojo.unsubscribe(this._listener);
         },
 
-        _parseRoutes: function(/*Array*/ routes) {
+        _parseRoutes: function(/*Array*/ routes){
             // summary:
             //            Builds inner routing table.
             // description:
@@ -38,7 +38,7 @@ dojo.declare('urldispatch.Dispatcher',
             //            expressions and collects keyword arguments.
             // tags:
             //            private
-            dojo.forEach(routes, dojo.hitch(this, function(route) {
+            dojo.forEach(routes, dojo.hitch(this, function(route){
                 this._routes.push({
                     pattern: new RegExp('^' + route[0].replace(/(:\w+)/, '(\\w+)') + '$', 'g'),
                     path: route[0],
@@ -49,22 +49,22 @@ dojo.declare('urldispatch.Dispatcher',
             }));
         },
 
-        redirect: function(/*String*/ hash) {
+        redirect: function(/*String*/ hash){
             // summary:
             //            Redirects visitor to argument URL hash.
             dojo.hash(hash);
         },
 
-        reverse: function(/*String*/ name, /*Object?*/ context) {
+        reverse: function(/*String*/ name, /*Object?*/ context){
             // summary:
             //            Returns route path for specified name.  Raises error
             //            if no route matched or context arguments are missing.
             var i, j, route;
-            for (i = 0; i < this._routes.length; i++) {
+            for(i = 0; i < this._routes.length; i++){
                 route = this._routes[i];
-                if (route.name === name) {
-                    if (typeof context === 'undefined') {
-                        if (route.kwArgs === null) {
+                if(route.name === name){
+                    if(typeof context === 'undefined'){
+                        if(route.kwArgs === null){
                             // return path if no context arguments present and
                             // route has no parameter
                             return route.path;
@@ -72,8 +72,8 @@ dojo.declare('urldispatch.Dispatcher',
                         throw new urldispatch.MissingArgumentError(this.declaredClass + '.reverse(): Missing arguments for route "' + route.name + '"');
                     }
                     // substitute keyword arguments to context parameters
-                    return route.path.replace(/:(\w+)/g, function(str, p1) {
-                        if (typeof context[p1] !== 'undefined') {
+                    return route.path.replace(/:(\w+)/g, function(str, p1){
+                        if(typeof context[p1] !== 'undefined'){
                             return context[p1];
                         }
                         throw new urldispatch.MissingArgumentError(this.declaredClass + '.reverse(): Missing argument "' + p1 + '" for route "' + route.name + '"');
@@ -83,7 +83,7 @@ dojo.declare('urldispatch.Dispatcher',
             throw new urldispatch.RouteNotFoundError(this.declaredClass+'.reverse(): No route matched the name "' + name + '"');
         },
 
-        dispatch: function(/*String*/ hash) {
+        dispatch: function(/*String*/ hash){
             // summary:
             //            Calls view according to URL hash.
             // description:
@@ -98,22 +98,22 @@ dojo.declare('urldispatch.Dispatcher',
                     dispatcher: this,
                     path: hash
                 };
-            for (i = 0; i < this._routes.length; i++) {
+            for(i = 0; i < this._routes.length; i++){
                 route = this._routes[i];
-                if (!route.pattern.test(hash)) {
+                if(!route.pattern.test(hash)){
                     continue;
                 }
                 params = hash.split(route.pattern);
                 params.shift(); // strip first and last empty chunk
                 params.pop();
-                for (j = 0; j < params.length; j++) {
+                for(j = 0; j < params.length; j++){
                     arg = route.kwArgs[j].substring(1); // strip first char ':'
                     request[arg] = params[j];
                 }
                 (route.view)(request);
                 return;
             }
-            if (this.notFoundHandler !== null) {
+            if(this.notFoundHandler !== null){
                 (this.notFoundHandler)(request);
             }
         }
