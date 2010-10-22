@@ -10,6 +10,7 @@ dojo.ready(function() {
         ['!/Hello/:name', hello_view, 'hello']
     ];
     var dispatcher = new urldispatch.Dispatcher(routes);
+    dispatcher.notFoundHandler = notfound_handler;
 });
 
 // Some views
@@ -29,4 +30,8 @@ function hello_view(request) {
         var url = request.dispatcher.reverse('home');
         request.dispatcher.redirect(url);
     }
+}
+
+function notfound_handler(request) {
+    console.log(request);
 }

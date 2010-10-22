@@ -8,6 +8,8 @@ dojo.declare('urldispatch.Dispatcher',
     null,
     {
         _routes: [],
+        // Default action handler for unknown routes
+        notFoundHandler: null,
 
         constructor: function(/*Array*/ routes) {
             // summary:
@@ -94,7 +96,10 @@ dojo.declare('urldispatch.Dispatcher',
                     request[arg] = params[j];
                 }
                 (route.view)(request);
-                break;
+                return;
+            }
+            if (this.notFoundHandler !== null) {
+                (this.notFoundHandler)(request);
             }
         }
     }
