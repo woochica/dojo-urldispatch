@@ -3,33 +3,33 @@ dojo.provide('demo');
 dojo.require("urldispatch");
 
 // Set up routes
-dojo.ready(function() {
+dojo.ready(function(){
     var routes = [
         ['!/', home_view, 'home'],
         ['!/Hello', hello_view],
         ['!/Hello/:name', hello_view, 'hello']
     ];
     var dispatcher = new urldispatch.Dispatcher(routes, {
-        notFoundHandler: function (request) {
+        notFoundHandler: function(request){
             console.log(request);
         }
     });
 });
 
 // Some views
-function home_view(request) {
+function home_view(request){
     alert('Welcome!');
 }
 
-function hello_view(request) {
-    if (!request.name) {
+function hello_view(request){
+    if(!request.name){
         alert('Hey, anonymous!');
         return;
     }
     var status = window.confirm('Hey, are you ' + request.name + '?');
-    if (status) {
+    if(status){
         alert('Tere ' + request.name + '!');
-    } else {
+    }else{
         var url = request.dispatcher.reverse('home');
         request.dispatcher.redirect(url);
     }
