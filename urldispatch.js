@@ -7,9 +7,17 @@ dojo.require("dojo.hash");
 dojo.declare('urldispatch.Dispatcher',
     null,
     {
+        // summary:
+        //    Client-side URL dispatcher.
+
+        // _routes: Array
+        //        Routing table
         _routes: [],
+        // _listener: Handle|null
+        //        Hash listener handle
         _listener: null,
-        // Default action handler for unknown routes
+        // notFoundHandler: Function|null
+        //        Default action handler for unknown routes
         notFoundHandler: null,
 
         constructor: function(/*Array*/ routes, /*Object?*/ args){
@@ -93,6 +101,8 @@ dojo.declare('urldispatch.Dispatcher',
             //            to the dispatcher instance, the route path, and
             //            matched URL parameters.  Exactly one view should
             //            belong to each routes.
+            // tags:
+            //            callback
             var i, j, route, params, arg,
                 request = {
                     dispatcher: this,
