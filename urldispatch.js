@@ -8,6 +8,7 @@ dojo.declare('urldispatch.Dispatcher',
     null,
     {
         _routes: [],
+        _listener: null,
         // Default action handler for unknown routes
         notFoundHandler: null,
 
@@ -19,8 +20,14 @@ dojo.declare('urldispatch.Dispatcher',
             //            to location hash changes.
             this._parseRoutes(routes);
             dojo.mixin(this, args);
-            dojo.subscribe("/dojo/hashchange", this, 'dispatch');
+            this._listener = dojo.subscribe("/dojo/hashchange", this, 'dispatch');
             this.dispatch(dojo.hash());
+        },
+
+        destroy: function() {
+            // summary:
+            //            Stop listening location hash changes.
+            dojo.unsubscribe(this._listener);
         },
 
         _parseRoutes: function(/*Array*/ routes) {
