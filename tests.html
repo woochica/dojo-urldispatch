@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Tests</title>
+	<script src="../dojo/dojo/dojo.js" type="text/javascript" djConfig="isDebug: true"></script>
+	<script src="urldispatch.js" ></script>
+</head>
+<body>
+	<script>
+	dojo.require("doh.runner");
+	dojo.require("urldispatch");
+	dojo.require("doh.runner");
+	dojo.require("doh._browserRunner");
+	dojo.require("dojox.testing.DocTest");
+	
+	doh.register("t",[
+		function test_regex_fix(t){
+			var test_views = {
+					root : 0,
+					hello : 0
+				},
+				routes = [
+          ['!/', function() {
+						test_views.root++;
+					}, 'home'],
+	        ['!/hello', function() {
+						test_views.hello++
+					}, 'hello']
+		    ],
+				dispatcher = new urldispatch.Dispatcher(routes);
+				
+				t.is(0, test_views.root);
+				dispatcher.dispatch("!/");
+				t.is(1, test_views.root);
+				dispatcher.dispatch("!/hello");
+				t.is(1, test_views.root);
+				t.is(1, test_views.hello);
+				dispatcher.dispatch("!/");
+				t.is(2, test_views.root);
+				t.is(1, test_views.hello);
+				dispatcher.dispatch("!/hello");
+				t.is(2, test_views.root);
+				t.is(2, test_views.hello);
+				dispatcher.dispatch("!/");
+				t.is(3, test_views.root);
+				t.is(2, test_views.hello);
+				console.log("Tests complete!");
+		}
+	]);
+	dojo.addOnLoad(function(){
+		doh.run()
+	});
+	</script>
+</body>
+</html>

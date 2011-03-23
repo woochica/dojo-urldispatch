@@ -48,7 +48,7 @@ dojo.declare('urldispatch.Dispatcher',
             //            private
             dojo.forEach(routes, dojo.hitch(this, function(route){
                 this._routes.push({
-                    pattern: new RegExp('^' + route[0].replace(/(:\w+)/, '(\\w+)') + '$', 'g'),
+                    pattern: new RegExp('^' + route[0].replace(/(:\w+)/, '(\\w+)') + '$'),
                     path: route[0],
                     view: route[1],
                     kwArgs: route[0].match(/:\w+/g),
