@@ -25,33 +25,33 @@ doh.register('tests.urldispatchTestGroup', [
     {
         name: 'routeMatchTest',
         setUp: function(){
-            this.test_views = {
+            this.testViews = {
                 root: 0,
                 hello: 0
             };
             this.routes = [
-                ['!/',  dojo.hitch(this, function(){ this.test_views.root++; }), 'home'],
-                ['!/hello',  dojo.hitch(this, function() { this.test_views.hello++; }), 'hello']
+                ['!/',  dojo.hitch(this, function(){ this.testViews.root++; }), 'home'],
+                ['!/hello',  dojo.hitch(this, function() { this.testViews.hello++; }), 'hello']
             ];
             this.dispatcher = new urldispatch.Dispatcher(this.routes);
         },
         runTest: function(){
-            var test_views = this.test_views;
-            doh.is(0, test_views.root);
+            var testViews = this.testViews;
+            doh.is(0, testViews.root);
             this.dispatcher.dispatch("!/");
-            doh.is(1, test_views.root);
+            doh.is(1, testViews.root);
             this.dispatcher.dispatch("!/hello");
-            doh.is(1, test_views.root);
-            doh.is(1, test_views.hello);
+            doh.is(1, testViews.root);
+            doh.is(1, testViews.hello);
             this.dispatcher.dispatch("!/");
-            doh.is(2, test_views.root);
-            doh.is(1, test_views.hello);
+            doh.is(2, testViews.root);
+            doh.is(1, testViews.hello);
             this.dispatcher.dispatch("!/hello");
-            doh.is(2, test_views.root);
-            doh.is(2, test_views.hello);
+            doh.is(2, testViews.root);
+            doh.is(2, testViews.hello);
             this.dispatcher.dispatch("!/");
-            doh.is(3, test_views.root);
-            doh.is(2, test_views.hello);
+            doh.is(3, testViews.root);
+            doh.is(2, testViews.hello);
         }
     }
  ]);
